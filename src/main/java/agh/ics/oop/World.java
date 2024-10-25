@@ -9,6 +9,7 @@ public class World {
         run(directions);
         System.out.println("STOP");
     }
+
     public static void run(MoveDirection[] directions) {
         for (MoveDirection direction : directions) {
             switch (direction) {
