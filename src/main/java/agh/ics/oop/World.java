@@ -25,8 +25,6 @@ public class World {
                 case LEFT:
                     System.out.println("zwierzak idzie w lewo");
                     break;
-                case ERROR:
-                    break;
             }
         }
     }
