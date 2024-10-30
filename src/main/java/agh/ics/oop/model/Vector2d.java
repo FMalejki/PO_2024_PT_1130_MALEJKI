@@ -42,4 +42,5 @@ public class Vector2d {
         return new Vector2d((this.x < other.x ? this.x : other.x),  (this.y < other.y ? this.y : other.y));
     }
 
+
 }
