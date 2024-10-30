@@ -15,7 +15,7 @@ public class Vector2d {
         return y;
     }
     public String toString() {
-        return "(" + this.x + ", " + this.y + ")";
+        return "(" + this.x + "," + this.y + ")";
     }
 
     public boolean precedes(Vector2d other) {
@@ -50,20 +50,19 @@ public class Vector2d {
         return other instanceof Vector2d;
     }
 
-    public boolean equals(Object other) {
-        //if( this == other ) return true;
-        if (instanceofVector2d(other)) {
-            Vector2d otherVec = (Vector2d) other;
-            return this.x == otherVec.x && this.y == otherVec.y;
-        } else {
-            return false;
-        }
-    }
-//    equals other - simpler method
 //    public boolean equals(Object other) {
-//        if (this == other) return true;
-//        if (!(other instanceof Vector2d)) return false;
-//        Vector2d otherVec = (Vector2d) other;
-//        return this.x == otherVec.x && this.y == otherVec.y;
+//        //if( this == other ) return true;
+//        if (instanceofVector2d(other)) {
+//            Vector2d otherVec = (Vector2d) other;
+//            return this.x == otherVec.x && this.y == otherVec.y;
+//        } else {
+//            return false;
+//        }
 //    }
+//    equals other - simpler method
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Vector2d otherVec)) return false;
+        return this.x == otherVec.x && this.y == otherVec.y;
+    }
 }
