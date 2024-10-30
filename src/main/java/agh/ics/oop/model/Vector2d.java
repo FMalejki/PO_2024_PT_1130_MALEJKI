@@ -14,8 +14,8 @@ public class Vector2d {
     public int getY() {
         return y;
     }
-    public String toString(int x, int y) {
-        return "(" + x + ", " + y + ")";
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
     }
 
     public boolean precedes(Vector2d other) {
@@ -51,6 +51,7 @@ public class Vector2d {
     }
 
     public boolean equals(Object other) {
+        //if( this == other ) return true;
         if (instanceofVector2d(other)) {
             Vector2d otherVec = (Vector2d) other;
             return this.x == otherVec.x && this.y == otherVec.y;
@@ -58,4 +59,11 @@ public class Vector2d {
             return false;
         }
     }
+//    equals other - simpler method
+//    public boolean equals(Object other) {
+//        if (this == other) return true;
+//        if (!(other instanceof Vector2d)) return false;
+//        Vector2d otherVec = (Vector2d) other;
+//        return this.x == otherVec.x && this.y == otherVec.y;
+//    }
 }
