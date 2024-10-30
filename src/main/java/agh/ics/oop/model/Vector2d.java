@@ -35,12 +35,27 @@ public class Vector2d {
     }
 
     public Vector2d upperRight(Vector2d other) {
-        return new Vector2d((this.x > other.x ? this.x : other.x),  (this.y > other.y ? this.y : other.y));
+        return new Vector2d((Math.max(this.x, other.x)),  (Math.max(this.y, other.y)));
     }
 
     public Vector2d lowerLeft(Vector2d other) {
-        return new Vector2d((this.x < other.x ? this.x : other.x),  (this.y < other.y ? this.y : other.y));
+        return new Vector2d((Math.min(this.x, other.x)),  (Math.min(this.y, other.y)));
     }
 
+    public Vector2d opposite() {
+        return new Vector2d(-this.x, -this.y);
+    }
 
+    public boolean instanceofVector2d(Object other) {
+        return other instanceof Vector2d;
+    }
+
+    public boolean equals(Object other) {
+        if (instanceofVector2d(other)) {
+            Vector2d otherVec = (Vector2d) other;
+            return this.x == otherVec.x && this.y == otherVec.y;
+        } else {
+            return false;
+        }
+    }
 }
