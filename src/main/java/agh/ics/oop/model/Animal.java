@@ -43,8 +43,6 @@ public class Animal {
                     this.position = supposed;
                 }
             }
-            default:
-                break;
         }
     }
 
