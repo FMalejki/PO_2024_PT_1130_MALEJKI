@@ -3,10 +3,13 @@ package agh.ics.oop;
 import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.Animal;
 
 public class World {
     public static void main(String[] args) {
         System.out.println("START");
+        Animal animal = new Animal();
+        System.out.println(animal);
         MoveDirection[] directions = OptionParser.refactor(args);
         run(directions);
         System.out.println("STOP");
@@ -27,6 +30,7 @@ public class World {
 //        System.out.println(direction);
 //        Vector2d dirVec = direction.toUnitVector();
 //        System.out.println(dirVec);
+
     }
 
     public static void run(MoveDirection[] directions) {

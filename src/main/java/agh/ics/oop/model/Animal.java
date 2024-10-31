@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-import java.util.Map;
+import java.util.Vector;
 
 public class Animal {
 
@@ -23,6 +23,27 @@ public class Animal {
 
     public Boolean isAt(Vector2d vector2d){
         return this.position.equals(vector2d);
+    }
+
+    public void move(MoveDirection direction){
+        switch(direction){
+            case RIGHT:
+                this.direction = MapDirection.next();
+            case LEFT:
+                this.direction = MapDirection.previous();
+            case FORWARD: {
+                Vector2d supposed = this.position.add(this.direction.toUnitVector());
+                if (supposed.getY() <= 4 && supposed.getY() >= 0 && supposed.getX() <= 4 && supposed.getX() >= 0) {
+                    this.position = supposed;
+                }
+            }
+            case BACKWARD: {
+                Vector2d supposed = this.position.add(this.direction.toUnitVector().opposite());
+                if (supposed.getY() <= 4 && supposed.getY() >= 0 && supposed.getX() <= 4 && supposed.getX() >= 0) {
+                    this.position = supposed;
+                }
+            }
+        }
     }
 
 }
