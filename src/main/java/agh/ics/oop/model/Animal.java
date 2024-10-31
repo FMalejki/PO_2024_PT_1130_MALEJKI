@@ -25,12 +25,12 @@ public class Animal {
         return this.position.equals(vector2d);
     }
 
-    public void move(MoveDirection direction){
-        switch(direction){
+    public void move(MoveDirection otherDirection){
+        switch(otherDirection){
             case RIGHT:
-                this.direction = MapDirection.next();
+                this.direction = this.direction.next();
             case LEFT:
-                this.direction = MapDirection.previous();
+                this.direction = this.direction.previous();
             case FORWARD: {
                 Vector2d supposed = this.position.add(this.direction.toUnitVector());
                 if (supposed.getY() <= 4 && supposed.getY() >= 0 && supposed.getX() <= 4 && supposed.getX() >= 0) {
@@ -43,6 +43,8 @@ public class Animal {
                     this.position = supposed;
                 }
             }
+            default:
+                break;
         }
     }
 
