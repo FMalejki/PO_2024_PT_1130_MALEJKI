@@ -3,7 +3,11 @@ package agh.ics.oop;
 import agh.ics.oop.model.MoveDirection;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class OptionParserTest {
@@ -11,51 +15,51 @@ public class OptionParserTest {
     @Test
     public void refactorTestF() {
         String[] arg = {"f"};
-        MoveDirection[] expect = {MoveDirection.FORWARD};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.FORWARD);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestB() {
         String[] arg = {"b"};
-        MoveDirection[] expect = {MoveDirection.BACKWARD};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.BACKWARD);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestR() {
         String[] arg = {"r"};
-        MoveDirection[] expect = {MoveDirection.RIGHT};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.RIGHT);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestL() {
         String[] arg = {"l"};
-        MoveDirection[] expect = {MoveDirection.LEFT};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.LEFT);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestWrong() {
         String[] arg = {"w"};
-        MoveDirection[] expect = {};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of();
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestMultiple() {
         String[] arg = {"f", "b", "r", "l", "f"};
-        MoveDirection[] expect = {MoveDirection.FORWARD, MoveDirection.BACKWARD,
-                MoveDirection.RIGHT, MoveDirection.LEFT, MoveDirection.FORWARD};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.FORWARD, MoveDirection.BACKWARD,
+                MoveDirection.RIGHT, MoveDirection.LEFT, MoveDirection.FORWARD);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 
     @Test
     public void refactorTestMultipleWithWrong() {
         String[] arg = {"f", "b", "w", "r", "l", "f"};
-        MoveDirection[] expect = {MoveDirection.FORWARD, MoveDirection.BACKWARD,
-                MoveDirection.RIGHT, MoveDirection.LEFT, MoveDirection.FORWARD};
-        assertArrayEquals(expect, OptionParser.refactor(arg));
+        List<MoveDirection> expect = List.of(MoveDirection.FORWARD, MoveDirection.BACKWARD,
+                MoveDirection.RIGHT, MoveDirection.LEFT, MoveDirection.FORWARD);
+        assertEquals(expect, OptionParser.refactor(arg));
     }
 }

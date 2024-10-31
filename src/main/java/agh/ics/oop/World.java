@@ -5,12 +5,14 @@ import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.Animal;
 
+import java.util.List;
+
 public class World {
     public static void main(String[] args) {
         System.out.println("START");
         Animal animal = new Animal();
         System.out.println(animal);
-        MoveDirection[] directions = OptionParser.refactor(args);
+        List<MoveDirection> directions = OptionParser.refactor(args);
         run(directions);
         System.out.println("STOP");
 //        check if Vector2d works as it should
@@ -33,7 +35,7 @@ public class World {
 
     }
 
-    public static void run(MoveDirection[] directions) {
+    public static void run(List<MoveDirection> directions) {
         for (MoveDirection direction : directions) {
             switch (direction) {
                 case FORWARD:
