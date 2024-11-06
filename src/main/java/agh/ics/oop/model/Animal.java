@@ -29,19 +29,23 @@ public class Animal {
         switch(otherDirection){
             case RIGHT:
                 this.direction = this.direction.next();
+                break;
             case LEFT:
                 this.direction = this.direction.previous();
+                break;
             case FORWARD: {
                 Vector2d supposed = this.position.add(this.direction.toUnitVector());
                 if (supposed.getY() <= 4 && supposed.getY() >= 0 && supposed.getX() <= 4 && supposed.getX() >= 0) {
                     this.position = supposed;
                 }
+                break;
             }
             case BACKWARD: {
                 Vector2d supposed = this.position.add(this.direction.toUnitVector().opposite());
                 if (supposed.getY() <= 4 && supposed.getY() >= 0 && supposed.getX() <= 4 && supposed.getX() >= 0) {
                     this.position = supposed;
                 }
+                break;
             }
         }
     }
