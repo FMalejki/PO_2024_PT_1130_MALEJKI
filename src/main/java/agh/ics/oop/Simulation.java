@@ -19,6 +19,10 @@ public class Simulation {
         this.moves.addAll(directions);
     }
 
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
     public void run() {
         // We use ArrayList because the main
         // operations are adding elements and iterating,

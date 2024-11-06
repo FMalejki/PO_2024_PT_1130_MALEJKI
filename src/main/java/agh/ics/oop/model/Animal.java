@@ -17,6 +17,14 @@ public class Animal {
         this.direction = MapDirection.NORTH;
     }
 
+    public Vector2d getPosition(){
+        return this.position;
+    }
+
+    public MapDirection getDirection(){
+        return this.direction;
+    }
+
     public String toString(){
         return this.position.toString() + " " + this.direction.toString();
     }
@@ -47,6 +55,8 @@ public class Animal {
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 

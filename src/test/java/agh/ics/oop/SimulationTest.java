@@ -1,4 +1,120 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.MapDirection;
+import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class SimulationTest {
+    @Test
+    public void animalSimulationDirectionTest(){
+
+        List<MoveDirection> directions = Arrays.asList(
+            MoveDirection.RIGHT,
+            MoveDirection.RIGHT,
+            MoveDirection.LEFT,
+            MoveDirection.RIGHT,
+            MoveDirection.LEFT,
+            MoveDirection.RIGHT
+        );
+
+        List<Vector2d> positions = Arrays.asList(
+                new Vector2d(2,2),
+                new Vector2d(1,1)
+        );
+
+        Simulation simulation = new Simulation(positions,directions);
+        simulation.run();
+        List<Animal> animals = simulation.getAnimals();
+        Animal animal0 = animals.get(0);
+        Animal animal1 = animals.get(1);
+
+        assertEquals(MapDirection.WEST.toString(), animal0.getDirection().toString());
+        assertEquals(MapDirection.WEST.toString(), animal1.getDirection().toString());
+    }
+
+    @Test
+    public void animalSimulationMoveTest(){
+        List<MoveDirection> directions = Arrays.asList(
+                MoveDirection.RIGHT,
+                MoveDirection.FORWARD,
+                MoveDirection.BACKWARD,
+                MoveDirection.LEFT,
+                MoveDirection.BACKWARD,
+                MoveDirection.BACKWARD
+        );
+        List<Vector2d> positions = Arrays.asList(
+                new Vector2d(2,2),
+                new Vector2d(1,1)
+        );
+
+        Simulation simulation = new Simulation(positions,directions);
+        simulation.run();
+        List<Animal> animals = simulation.getAnimals();
+        Animal animal0 = animals.get(0);
+        Animal animal1 = animals.get(1);
+        assertEquals("(0,2)", animal0.getPosition().toString());
+        assertEquals("(2,2)", animal1.getPosition().toString());
+    }
+
+    @Test
+    public void animalSimulationOutsideMapMoveTest(){
+        List<MoveDirection> directions = Arrays.asList(
+                MoveDirection.RIGHT,
+                MoveDirection.LEFT,
+                MoveDirection.RIGHT,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.BACKWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD
+
+        );
+        List<Vector2d> positions = Arrays.asList(
+                new Vector2d(4,4),
+                new Vector2d(1,1),
+                new Vector2d(0,0)
+        );
+
+        Simulation simulation = new Simulation(positions,directions);
+        simulation.run();
+        List<Animal> animals = simulation.getAnimals();
+        Animal animal0 = animals.get(0);
+        Animal animal1 = animals.get(1);
+        Animal animal2 = animals.get(2);
+        assertEquals("(4,4)", animal0.getPosition().toString());
+        assertEquals("(0,1)", animal1.getPosition().toString());
+        assertEquals("(1,0)", animal2.getPosition().toString());
+    }
+
+    @Test
+    public void simulationListTest () {
+        List<MoveDirection> directions = Arrays.asList(
+                MoveDirection.RIGHT,
+                MoveDirection.LEFT,
+                MoveDirection.RIGHT,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.BACKWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD,
+                MoveDirection.FORWARD
+
+        );
+        List<Vector2d> positions = Arrays.asList(
+                new Vector2d(4,4),
+                new Vector2d(1,1),
+                new Vector2d(0,0)
+        );
+        Simulation simulation = new Simulation(positions,directions);
+        List<Animal> animals = simulation.getAnimals();
+        assertEquals(animals.size(), 3);
+    }
 }
