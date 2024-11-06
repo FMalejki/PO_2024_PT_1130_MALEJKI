@@ -20,6 +20,12 @@ public class Simulation {
     }
 
     public void run() {
+        // We use ArrayList because the main
+        // operations are adding elements and iterating,
+        // those operations are very efficient in the case
+        // of array lists.
+        // If we were to frequently insert or remove items from the
+        // list changing to linkedlists would make more sense
         int i = 0;
         int sizeOfAnimals = this.animals.size();
         for(MoveDirection move : this.moves){
