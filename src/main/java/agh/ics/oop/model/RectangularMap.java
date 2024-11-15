@@ -42,7 +42,7 @@ public class RectangularMap implements WorldMap{
     @Override
     public void move(Animal animal, MoveDirection direction) {
         Vector2d current = animal.getPosition();
-        animal.move(direction);
+        animal.move(direction, this);
         animals.remove(current);
         animals.put(animal.getPosition(), animal);
     }
