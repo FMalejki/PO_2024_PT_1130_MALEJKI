@@ -1,5 +1,8 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.MapVisualizer;
+
+import java.util.Map;
 import java.util.Vector;
 
 public class Animal {
