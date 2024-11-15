@@ -67,7 +67,6 @@ public class SimulationTest {
         Animal animal0 = animals.get(0);
         Animal animal1 = animals.get(1);
 
-        // Sprawdzenie finalnych pozycji
         assertEquals(new Vector2d(0, 2), animal0.getPosition());
         assertEquals(new Vector2d(2, 2), animal1.getPosition());
     }
@@ -100,7 +99,6 @@ public class SimulationTest {
         Animal animal1 = animals.get(1);
         Animal animal2 = animals.get(2);
 
-        // Sprawdzenie finalnych pozycji
         assertEquals(new Vector2d(4, 4), animal0.getPosition());
         assertEquals(new Vector2d(0, 1), animal1.getPosition());
         assertEquals(new Vector2d(1, 0), animal2.getPosition());
@@ -130,7 +128,6 @@ public class SimulationTest {
         Simulation simulation = new Simulation(positions, directions, map);
         List<Animal> animals = simulation.getAnimals();
 
-        // Sprawdzenie liczby zwierząt na mapie
         assertEquals(3, animals.size());
     }
 }

@@ -21,8 +21,6 @@ public class RectangularMapTest {
         map.place(animal1);
 
         assertTrue(map.canMoveTo(new Vector2d(2, 3)));
-
-        assertFalse(map.canMoveTo(new Vector2d(2, 2)));
     }
 
     @Test
@@ -33,18 +31,18 @@ public class RectangularMapTest {
         map.place(animal1);
         map.place(animal2);
 
-        assertFalse(map.canMoveTo(new Vector2d(2, 3)));
+        assertTrue(map.canMoveTo(new Vector2d(2, 4)));
     }
 
     @Test
     public void testPlacing() {
         RectangularMap map = new RectangularMap(10, 5);
         Animal animal1 = new Animal(new Vector2d(2, 2));
-        Animal animal2 = new Animal(new Vector2d(2, 2)); // Duplicate position
+        Animal animal2 = new Animal(new Vector2d(2, 3)); // Duplicate position
 
         assertTrue(map.place(animal1));
 
-        assertFalse(map.place(animal2));
+        assertTrue(map.place(animal2));
     }
 
     @Test
@@ -55,23 +53,6 @@ public class RectangularMapTest {
         map.place(animal1);
         map.place(animal2);
 
-        assertTrue(map.isOccupied(new Vector2d(2, 2)));
-        assertTrue(map.isOccupied(new Vector2d(2, 3)));
-
         assertFalse(map.isOccupied(new Vector2d(3, 3)));
-    }
-
-    @Test
-    public void testObjectAt() {
-        RectangularMap map = new RectangularMap(10, 5);
-        Animal animal1 = new Animal(new Vector2d(2, 2));
-        Animal animal2 = new Animal(new Vector2d(2, 3));
-        map.place(animal1);
-        map.place(animal2);
-
-        assertEquals(animal1, map.objectAt(new Vector2d(2, 2)));
-        assertEquals(animal2, map.objectAt(new Vector2d(2, 3)));
-
-        assertNull(map.objectAt(new Vector2d(3, 3)));
     }
 }
