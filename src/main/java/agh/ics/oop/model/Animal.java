@@ -26,7 +26,7 @@ public class Animal {
     }
 
     public String toString(){
-        return this.position.toString() + " " + this.direction.toString();
+        return this.direction.toString();
     }
 
     public Boolean isAt(Vector2d vector2d){
