@@ -11,6 +11,11 @@ public class World {
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
         RectangularMap map = new RectangularMap(5,10);
         System.out.println(map);
+        map.place(new Animal());
+        System.out.println(map);
+        System.out.println(map.objectAt(new Vector2d(2,2)));
+        System.out.println(map);
+        System.out.println(map.isOccupied(new Vector2d(2,2)));
 
         System.out.println("STOP");
     }
