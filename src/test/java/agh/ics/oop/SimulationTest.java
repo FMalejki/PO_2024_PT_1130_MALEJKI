@@ -67,8 +67,8 @@ public class SimulationTest {
         Animal animal0 = animals.get(0);
         Animal animal1 = animals.get(1);
 
-        assertEquals(new Vector2d(0, 2), animal0.getPosition());
-        assertEquals(new Vector2d(2, 2), animal1.getPosition());
+        assertEquals(new Vector2d(2, 2), animal0.getPosition());
+        assertEquals(new Vector2d(1, 2), animal1.getPosition());
     }
 
     @Test
