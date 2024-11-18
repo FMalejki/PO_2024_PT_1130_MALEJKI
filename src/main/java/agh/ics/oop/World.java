@@ -1,9 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.MapDirection;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
-import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.*;
 
 import java.util.List;
 
@@ -12,8 +9,14 @@ public class World {
         System.out.println("START");
         List<MoveDirection> directions = OptionParser.refactor(args);
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        Simulation simulation = new Simulation(positions, directions);
-        simulation.run();
+        RectangularMap map = new RectangularMap(5,10);
+        System.out.println(map);
+        map.place(new Animal());
+        System.out.println(map);
+        System.out.println(map.objectAt(new Vector2d(2,2)));
+        System.out.println(map);
+        System.out.println(map.isOccupied(new Vector2d(2,2)));
+
         System.out.println("STOP");
     }
 
