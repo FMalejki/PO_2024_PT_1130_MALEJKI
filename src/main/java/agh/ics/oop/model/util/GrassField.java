@@ -29,7 +29,7 @@ public class GrassField implements WorldMap {
     }
 
     @Override
-    public Animal objectAt(Vector2d position) {
+    public WorldElement objectAt(Vector2d position) {
         return null;
     }
 

@@ -1,11 +1,12 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.MapVisualizer;
+import agh.ics.oop.model.util.WorldElement;
 
 import java.util.Map;
 import java.util.Vector;
 
-public class Animal {
+public class Animal implements WorldElement {
 
     private MapDirection direction;
     private Vector2d position;
@@ -20,6 +21,7 @@ public class Animal {
         this.direction = MapDirection.NORTH;
     }
 
+    @Override
     public Vector2d getPosition(){
         return this.position;
     }
@@ -28,6 +30,7 @@ public class Animal {
         return this.direction;
     }
 
+    @Override
     public String toString(){
         return this.direction.toString();
     }
