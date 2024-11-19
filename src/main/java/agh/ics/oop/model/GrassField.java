@@ -20,6 +20,7 @@ public class GrassField implements WorldMap {
         this.number = number;
         this.animals = new HashMap<>();
         this.visualizer = new MapVisualizer(this);
+        placeGrasses();
     }
 
     public void placeGrasses() {
@@ -41,7 +42,8 @@ public class GrassField implements WorldMap {
     }
 
     private boolean placeSingleGrass(int X, int Y) {
-        if (isOccupiedByGrass(new Vector2d(X,Y))) {
+        System.out.println("Place single grass");
+        if (objectAt(new Vector2d(X,Y)) != null) {
             return false;
         }
         else {
@@ -72,21 +74,15 @@ public class GrassField implements WorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
+        //if its instance of Grass its not occupied (animal can step on it)
         return objectAt(position) != null;
     }
 
-    public boolean isOccupiedByGrass(Vector2d position) {
-        return grassAt(position) != null;
-    }
-
-    private WorldElement grassAt(Vector2d position){
-        if(grasses.get(position) != null) return grasses.get(position);
-        return null;
-    }
 
     @Override
     public WorldElement objectAt(Vector2d position) {
         if(animals.get(position) != null) return animals.get(position);
+        if(grasses.get(position) != null) return grasses.get(position);
         return null;
     }
 
@@ -99,7 +95,7 @@ public class GrassField implements WorldMap {
         //set start and end
         //parse thru animals and grass and take the most high right and low left
         //upper right lower left
-        if(animals.isEmpty()){
+        if(animals.isEmpty() && grasses.isEmpty()) {
             return visualizer.draw(new Vector2d(0,0), new Vector2d(5,5));
         }
         else {

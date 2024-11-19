@@ -44,10 +44,6 @@ public class Vector2d {
         return new Vector2d((Math.min(this.x, other.x)),  (Math.min(this.y, other.y)));
     }
 
-    public Vector2d findSmallestRectangle(){
-
-    }
-
     public Vector2d opposite() {
         return new Vector2d(-this.x, -this.y);
     }
