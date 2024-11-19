@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.MapVisualizer;
-import agh.ics.oop.model.util.WorldElement;
 
 import java.util.HashMap;
 import java.util.Map;

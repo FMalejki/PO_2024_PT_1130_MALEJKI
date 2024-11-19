@@ -1,11 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.MapVisualizer;
-import agh.ics.oop.model.util.WorldElement;
-
-import java.util.Map;
-import java.util.Vector;
-
 public class Animal implements WorldElement {
 
     private MapDirection direction;
@@ -39,7 +33,7 @@ public class Animal implements WorldElement {
         return this.position.equals(vector2d);
     }
 
-    public void move(MoveDirection otherDirection, RectangularMap map){
+    public void move(MoveDirection otherDirection, WorldMap map){
         Vector2d newPosition = this.position;
 
         switch(otherDirection){
