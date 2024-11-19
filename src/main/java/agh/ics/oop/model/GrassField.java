@@ -6,19 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class GrassField implements WorldMap {
+public class GrassField extends AbstractWorldMap {
 
-    private final Map<Vector2d, Animal> animals;
     private final Map<Vector2d, Grass> grasses;
-    private final MapVisualizer visualizer;
-
-    private int number;
+    private final int number;
 
     public GrassField(int number) {
         this.grasses = new HashMap<>();
         this.number = number;
-        this.animals = new HashMap<>();
-        this.visualizer = new MapVisualizer(this);
         placeGrasses();
     }
 
@@ -41,7 +36,6 @@ public class GrassField implements WorldMap {
     }
 
     private boolean placeSingleGrass(int X, int Y) {
-        System.out.println("Place single grass");
         if (objectAt(new Vector2d(X,Y)) != null) {
             return false;
         }
@@ -51,49 +45,19 @@ public class GrassField implements WorldMap {
         }
     }
 
-
-    @Override
-    public boolean place(Animal animal) {
-        if (canMoveTo(animal.getPosition())) {
-            animals.put(animal.getPosition(), animal);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    @Override
-    public void move(Animal animal, MoveDirection direction) {
-        Vector2d current = animal.getPosition();
-        animal.move(direction, this);
-        animals.remove(current);
-        animals.put(animal.getPosition(), animal);
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        //if its instance of Grass its not occupied (animal can step on it)
-        return objectAt(position) != null;
-    }
-
-
     @Override
     public WorldElement objectAt(Vector2d position) {
-        if(animals.get(position) != null) return animals.get(position);
-        if(grasses.get(position) != null) return grasses.get(position);
-        return null;
+        WorldElement object = super.objectAt(position);
+        if(object != null) return object;
+        return grasses.get(position);
     }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
+        return objectAt(position) == null || objectAt(position) instanceof Grass;
     }
 
     public String toString() {
-        //set start and end
-        //parse thru animals and grass and take the most high right and low left
-        //upper right lower left
         if(animals.isEmpty() && grasses.isEmpty()) {
             return visualizer.draw(new Vector2d(0,0), new Vector2d(5,5));
         }
