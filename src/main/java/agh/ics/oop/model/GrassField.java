@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -55,6 +56,13 @@ public class GrassField extends AbstractWorldMap {
     @Override
     public boolean canMoveTo(Vector2d position) {
         return objectAt(position) == null || objectAt(position) instanceof Grass;
+    }
+
+    @Override
+    public List<WorldElement> getElements() {
+        List<WorldElement> elements = super.getElements();
+        elements.addAll(grasses.values());
+        return elements;
     }
 
     public String toString() {
