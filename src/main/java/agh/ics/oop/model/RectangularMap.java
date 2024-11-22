@@ -13,6 +13,6 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     public String toString() {
-        return visualizer.draw(start, end);
+        return visualizer.draw(this.start, this.end);
     }
 }
