@@ -48,12 +48,12 @@ public class SimulationTest {
     public void animalSimulationMoveTest() {
         this.map = new RectangularMap(5, 5);
         List<MoveDirection> directions = Arrays.asList(
-                MoveDirection.RIGHT,
-                MoveDirection.FORWARD,
-                MoveDirection.BACKWARD,
-                MoveDirection.LEFT,
-                MoveDirection.BACKWARD,
-                MoveDirection.BACKWARD
+                MoveDirection.RIGHT, //2,2
+                MoveDirection.FORWARD, //1,2
+                MoveDirection.BACKWARD, //1,2
+                MoveDirection.LEFT, // 1,2
+                MoveDirection.BACKWARD, //0,2
+                MoveDirection.BACKWARD //2,2
         );
 
         List<Vector2d> positions = Arrays.asList(

@@ -74,4 +74,17 @@ public class RectangularMapTest {
 
         assertNull(map.objectAt(new Vector2d(3, 3)));
     }
+
+    //New tests
+    @Test
+    public void testObjectAt2() {
+        RectangularMap map = new RectangularMap(10, 5);
+        Animal animal1 = new Animal(new Vector2d(2, 2));
+        Animal animal2 = new Animal(new Vector2d(2, 3));
+        map.place(animal1);
+        map.place(animal2);
+
+        assertInstanceOf(WorldElement.class, map.objectAt(new Vector2d(2, 2)));
+        assertInstanceOf(WorldElement.class, map.objectAt(new Vector2d(2, 3)));
+    }
 }
