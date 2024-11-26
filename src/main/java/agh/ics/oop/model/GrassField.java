@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.HashMap;
@@ -12,13 +13,13 @@ public class GrassField extends AbstractWorldMap {
     private final Map<Vector2d, Grass> grasses;
     private final int number;
 
-    public GrassField(int number) {
+    public GrassField(int number){
         this.grasses = new HashMap<>();
         this.number = number;
         placeGrasses();
     }
 
-    public void placeGrasses() {
+    public void placeGrasses(){
         Random random = new Random();
         Vector2d start = new Vector2d(0,0);
         Vector2d end = new Vector2d((int) Math.round(Math.sqrt(10*this.number)), (int) Math.round(Math.sqrt(10*this.number)));
@@ -30,15 +31,18 @@ public class GrassField extends AbstractWorldMap {
         while(it < number) {
             int randomX = random.nextInt(endX + 1 - startX) + startX; // [min, max+1)
             int randomY = random.nextInt(endY + 1 - startY) + startY;
-            if( placeSingleGrass(randomX, randomY)) {
-                it++;
+            try{
+                if(placeSingleGrass(randomX,randomY)){
+                    it++;
+                }
             }
+            catch(IncorrectPositionException e){}
         }
     }
 
-    private boolean placeSingleGrass(int X, int Y) {
+    private boolean placeSingleGrass(int X, int Y) throws IncorrectPositionException {
         if (objectAt(new Vector2d(X,Y)) != null) {
-            return false;
+            throw new IncorrectPositionException(new Vector2d(X,Y));
         }
         else {
             grasses.put(new Vector2d(X,Y), new Grass(new Vector2d(X,Y)));

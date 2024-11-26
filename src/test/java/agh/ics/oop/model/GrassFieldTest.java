@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
@@ -21,10 +22,11 @@ public class GrassFieldTest {
     void testAnimalPlacement() {
         GrassField grassField = new GrassField(5);
         Animal animal = new Animal(new Vector2d(5, 5));
-
-        boolean placed = grassField.place(animal);
-
-        assertTrue(placed);
+        try {
+            assertTrue(grassField.place(animal));
+        }catch (IncorrectPositionException e){
+            fail("Unexpected exception: " + e.getMessage());
+        }
         assertTrue(grassField.isOccupied(new Vector2d(5, 5)));
         assertEquals(animal, grassField.objectAt(new Vector2d(5, 5)));
     }
@@ -34,13 +36,19 @@ public class GrassFieldTest {
         GrassField grassField = new GrassField(5);
         Animal animal1 = new Animal(new Vector2d(2, 2));
         Animal animal2 = new Animal(new Vector2d(2, 2));
-
-        grassField.place(animal1);
-        boolean placed = grassField.place(animal2);
+        try {
+            assertTrue(grassField.place(animal1));
+        }catch (IncorrectPositionException e){
+            fail("Unexpected exception: " + e.getMessage());
+        }
+        try {
+            assertFalse(grassField.place(animal2));
+        }catch (IncorrectPositionException e){
+            assertEquals("Position " + animal2.getPosition() + " is not correct.", e.getMessage());
+        }
         boolean canMove = grassField.canMoveTo(new Vector2d(2, 2));
 
         assertFalse(canMove);
-        assertFalse(placed);
     }
 
     @Test
@@ -48,7 +56,11 @@ public class GrassFieldTest {
         GrassField grassField = new GrassField(0);
         Animal animal = new Animal(new Vector2d(1, 1));
 
-        grassField.place(animal);
+        try {
+            assertTrue(grassField.place(animal));
+        }catch(IncorrectPositionException e){
+            fail("Unexpected exception: " + e.getMessage());
+        }
 
         grassField.move(animal, MoveDirection.FORWARD);
         assertEquals(new Vector2d(1, 2), animal.getPosition());
@@ -60,7 +72,12 @@ public class GrassFieldTest {
     void testToStringRepresentation() {
         GrassField grassField = new GrassField(5);
         Animal animal = new Animal(new Vector2d(5, 5));
-        grassField.place(animal);
+
+        try {
+            assertTrue(grassField.place(animal));
+        }catch(IncorrectPositionException e){
+            fail("Unexpected exception: " + e.getMessage());
+        }
 
         String mapRepresentation = grassField.toString();
 
@@ -88,9 +105,13 @@ public class GrassFieldTest {
                 break;
             }
         }
+        try {
+            assertTrue(grassField.place(new Animal(placement)));
+        }catch(IncorrectPositionException e){
+            fail("Unexpected exception: " + e.getMessage());
+        }
         assertTrue(flag);
         assertTrue(grassField.isOccupied(placement));
-        assertTrue(grassField.place(new Animal(placement)));
     }
 
     @Test
