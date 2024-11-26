@@ -15,12 +15,28 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected Vector2d start;
     protected Vector2d end;
     protected final MapVisualizer visualizer = new MapVisualizer(this);
+    protected final List<MapChangeListener> observers = new ArrayList<>();
+
+    public void addObserver(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
+    public void removeObserver(MapChangeListener listener) {
+        observers.remove(listener);
+    }
+
+    protected void mapChanged(String text) {
+        for (MapChangeListener listener : observers) {
+            listener.mapChanged(this,text);
+        }
+    }
 
 
     @Override
     public boolean place(Animal animal) throws IncorrectPositionException {
         if (canMoveTo(animal.getPosition())) {
             animals.put(animal.getPosition(), animal);
+            mapChanged("Animal placed at " + animal.getPosition());
             return true;
         }
         else {
@@ -34,6 +50,7 @@ public abstract class AbstractWorldMap implements WorldMap{
         animal.move(direction, this);
         animals.remove(current);
         animals.put(animal.getPosition(), animal);
+        mapChanged("Animal moved to " + animal.getPosition() + " from " + current);
     }
 
     @Override
