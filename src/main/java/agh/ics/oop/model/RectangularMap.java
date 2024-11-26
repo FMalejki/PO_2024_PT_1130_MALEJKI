@@ -11,8 +11,4 @@ public class RectangularMap extends AbstractWorldMap{
         start = new Vector2d(0,0);
         end = new Vector2d(width -1, height -1);
     }
-
-    public String toString() {
-        return visualizer.draw(this.start, this.end);
-    }
 }

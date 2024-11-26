@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
@@ -69,56 +70,55 @@ public class GrassField extends AbstractWorldMap {
         return elements;
     }
 
-    public String toString() {
-        if(animals.isEmpty() && grasses.isEmpty()) {
-            return visualizer.draw(new Vector2d(0,0), new Vector2d(5,5));
-        }
-        else {
+    @Override
+    public Boundary getCurrentBounds() {
+        if (animals.isEmpty() && grasses.isEmpty()) {
+            return new Boundary(new Vector2d(0, 0), new Vector2d(5, 5));
+        } else {
             int highestX = 0;
             int highestY = 0;
             int lowestX = 0;
             int lowestY = 0;
             int it = 0;
             for (Vector2d position : animals.keySet()) {
-                if(it == 0){
+                if (it == 0) {
                     highestX = position.getX();
                     highestY = position.getY();
                     lowestX = position.getX();
                     lowestY = position.getY();
                     it++;
-                }
-                else{
-                    if(position.getX() > highestX){
+                } else {
+                    if (position.getX() > highestX) {
                         highestX = position.getX();
                     }
-                    if(position.getY() > highestY){
+                    if (position.getY() > highestY) {
                         highestY = position.getY();
                     }
-                    if(position.getX() < lowestX){
+                    if (position.getX() < lowestX) {
                         lowestX = position.getX();
                     }
-                    if(position.getY() < lowestY){
+                    if (position.getY() < lowestY) {
                         lowestY = position.getY();
                     }
                 }
             }
             for (Vector2d position : grasses.keySet()) {
-                if(position.getX() > highestX){
+                if (position.getX() > highestX) {
                     highestX = position.getX();
                 }
-                if(position.getY() > highestY){
+                if (position.getY() > highestY) {
                     highestY = position.getY();
                 }
-                if(position.getX() < lowestX){
+                if (position.getX() < lowestX) {
                     lowestX = position.getX();
                 }
-                if(position.getY() < lowestY){
+                if (position.getY() < lowestY) {
                     lowestY = position.getY();
                 }
             }
-            Vector2d start = new Vector2d(lowestX,lowestY);
-            Vector2d end = new Vector2d(highestX,highestY);
-            return visualizer.draw(start, end);
+            Vector2d start = new Vector2d(lowestX, lowestY);
+            Vector2d end = new Vector2d(highestX, highestY);
+            return new Boundary(start, end);
         }
     }
 }

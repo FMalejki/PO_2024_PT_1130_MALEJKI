@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
@@ -56,5 +57,15 @@ public abstract class AbstractWorldMap implements WorldMap{
     public List<WorldElement> getElements() {
         List<WorldElement> elements = new ArrayList<>(animals.values());
         return elements;
+    }
+
+    @Override
+    public Boundary getCurrentBounds(){
+        return new Boundary(start, end);
+    }
+
+    @Override
+    public String toString() {
+        return visualizer.draw(getCurrentBounds().start(), getCurrentBounds().end());
     }
 }
