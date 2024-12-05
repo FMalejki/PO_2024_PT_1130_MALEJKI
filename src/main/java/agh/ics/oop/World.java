@@ -3,6 +3,7 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +22,15 @@ public class World {
             Simulation sim1 = new Simulation(positions, directions, rectangularMap);
             Simulation sim2 = new Simulation(positions, directions, grassField);
 
-            SimulationEngine engine = new SimulationEngine(Arrays.asList(sim1, sim2));
-            engine.runSync();
+            //SimulationEngine engine = new SimulationEngine(Arrays.asList(sim1, sim2));
+
+            List<Simulation> simulations = new ArrayList<>();
+            for (int i = 0; i < 500; i++) {
+                simulations.add(sim1);
+                simulations.add(sim2);
+            }
+            SimulationEngine engine = new SimulationEngine(simulations);
+            engine.runAsync();
 
         }catch(IllegalArgumentException e) {
 

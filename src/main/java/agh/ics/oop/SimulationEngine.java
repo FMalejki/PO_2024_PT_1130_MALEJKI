@@ -1,9 +1,11 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationEngine {
     private final List<Simulation> simulations;
+    private final List<Thread> threads = new ArrayList<>();
 
     public SimulationEngine(List<Simulation> simulations) {
         this.simulations = simulations;
@@ -12,6 +14,25 @@ public class SimulationEngine {
     public void runSync() {
         for (Simulation simulation : simulations) {
             simulation.run();
+        }
+    }
+
+    public void runAsync() {
+        for (Simulation sim : simulations) {
+            Thread thread = new Thread(sim);
+            threads.add(thread);
+            thread.start();
+        }
+        awaitSimulationsEnd();
+    }
+
+    public void awaitSimulationsEnd() {
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }
