@@ -11,12 +11,14 @@ import java.util.Map;
 
 public abstract class AbstractWorldMap implements WorldMap{
 
+    protected final int id = this.hashCode();
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
     protected Vector2d start;
     protected Vector2d end;
     protected final MapVisualizer visualizer = new MapVisualizer(this);
     protected final List<MapChangeListener> observers = new ArrayList<>();
 
+    @Override
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
     }
@@ -84,5 +86,10 @@ public abstract class AbstractWorldMap implements WorldMap{
     @Override
     public String toString() {
         return visualizer.draw(getCurrentBounds().start(), getCurrentBounds().end());
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 }
