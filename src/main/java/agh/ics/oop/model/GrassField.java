@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.HashMap;
@@ -12,13 +14,13 @@ public class GrassField extends AbstractWorldMap {
     private final Map<Vector2d, Grass> grasses;
     private final int number;
 
-    public GrassField(int number) {
+    public GrassField(int number){
         this.grasses = new HashMap<>();
         this.number = number;
         placeGrasses();
     }
 
-    public void placeGrasses() {
+    public void placeGrasses(){
         Random random = new Random();
         Vector2d start = new Vector2d(0,0);
         Vector2d end = new Vector2d((int) Math.round(Math.sqrt(10*this.number)), (int) Math.round(Math.sqrt(10*this.number)));
@@ -30,15 +32,18 @@ public class GrassField extends AbstractWorldMap {
         while(it < number) {
             int randomX = random.nextInt(endX + 1 - startX) + startX; // [min, max+1)
             int randomY = random.nextInt(endY + 1 - startY) + startY;
-            if( placeSingleGrass(randomX, randomY)) {
-                it++;
+            try{
+                if(placeSingleGrass(randomX,randomY)){
+                    it++;
+                }
             }
+            catch(IncorrectPositionException e){}
         }
     }
 
-    private boolean placeSingleGrass(int X, int Y) {
+    private boolean placeSingleGrass(int X, int Y) throws IncorrectPositionException {
         if (objectAt(new Vector2d(X,Y)) != null) {
-            return false;
+            throw new IncorrectPositionException(new Vector2d(X,Y));
         }
         else {
             grasses.put(new Vector2d(X,Y), new Grass(new Vector2d(X,Y)));
@@ -65,56 +70,55 @@ public class GrassField extends AbstractWorldMap {
         return elements;
     }
 
-    public String toString() {
-        if(animals.isEmpty() && grasses.isEmpty()) {
-            return visualizer.draw(new Vector2d(0,0), new Vector2d(5,5));
-        }
-        else {
+    @Override
+    public Boundary getCurrentBounds() {
+        if (animals.isEmpty() && grasses.isEmpty()) {
+            return new Boundary(new Vector2d(0, 0), new Vector2d(5, 5));
+        } else {
             int highestX = 0;
             int highestY = 0;
             int lowestX = 0;
             int lowestY = 0;
             int it = 0;
             for (Vector2d position : animals.keySet()) {
-                if(it == 0){
+                if (it == 0) {
                     highestX = position.getX();
                     highestY = position.getY();
                     lowestX = position.getX();
                     lowestY = position.getY();
                     it++;
-                }
-                else{
-                    if(position.getX() > highestX){
+                } else {
+                    if (position.getX() > highestX) {
                         highestX = position.getX();
                     }
-                    if(position.getY() > highestY){
+                    if (position.getY() > highestY) {
                         highestY = position.getY();
                     }
-                    if(position.getX() < lowestX){
+                    if (position.getX() < lowestX) {
                         lowestX = position.getX();
                     }
-                    if(position.getY() < lowestY){
+                    if (position.getY() < lowestY) {
                         lowestY = position.getY();
                     }
                 }
             }
             for (Vector2d position : grasses.keySet()) {
-                if(position.getX() > highestX){
+                if (position.getX() > highestX) {
                     highestX = position.getX();
                 }
-                if(position.getY() > highestY){
+                if (position.getY() > highestY) {
                     highestY = position.getY();
                 }
-                if(position.getX() < lowestX){
+                if (position.getX() < lowestX) {
                     lowestX = position.getX();
                 }
-                if(position.getY() < lowestY){
+                if (position.getY() < lowestY) {
                     lowestY = position.getY();
                 }
             }
-            Vector2d start = new Vector2d(lowestX,lowestY);
-            Vector2d end = new Vector2d(highestX,highestY);
-            return visualizer.draw(start, end);
+            Vector2d start = new Vector2d(lowestX, lowestY);
+            Vector2d end = new Vector2d(highestX, highestY);
+            return new Boundary(start, end);
         }
     }
 }

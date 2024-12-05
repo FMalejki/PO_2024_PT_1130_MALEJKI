@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.ArrayList;
@@ -13,16 +15,32 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected Vector2d start;
     protected Vector2d end;
     protected final MapVisualizer visualizer = new MapVisualizer(this);
+    protected final List<MapChangeListener> observers = new ArrayList<>();
+
+    public void addObserver(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
+    public void removeObserver(MapChangeListener listener) {
+        observers.remove(listener);
+    }
+
+    protected void mapChanged(String text) {
+        for (MapChangeListener listener : observers) {
+            listener.mapChanged(this,text);
+        }
+    }
 
 
     @Override
-    public boolean place(Animal animal) {
+    public boolean place(Animal animal) throws IncorrectPositionException {
         if (canMoveTo(animal.getPosition())) {
             animals.put(animal.getPosition(), animal);
+            mapChanged("Animal placed at " + animal.getPosition());
             return true;
         }
         else {
-            return false;
+            throw new IncorrectPositionException(animal.getPosition());
         }
     }
 
@@ -32,6 +50,7 @@ public abstract class AbstractWorldMap implements WorldMap{
         animal.move(direction, this);
         animals.remove(current);
         animals.put(animal.getPosition(), animal);
+        mapChanged("Animal moved to " + animal.getPosition() + " from " + current);
     }
 
     @Override
@@ -55,5 +74,15 @@ public abstract class AbstractWorldMap implements WorldMap{
     public List<WorldElement> getElements() {
         List<WorldElement> elements = new ArrayList<>(animals.values());
         return elements;
+    }
+
+    @Override
+    public Boundary getCurrentBounds(){
+        return new Boundary(start, end);
+    }
+
+    @Override
+    public String toString() {
+        return visualizer.draw(getCurrentBounds().start(), getCurrentBounds().end());
     }
 }
