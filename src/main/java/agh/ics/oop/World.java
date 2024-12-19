@@ -25,7 +25,7 @@ public class World {
             //SimulationEngine engine = new SimulationEngine(Arrays.asList(sim1, sim2));
 
             List<Simulation> simulations = new ArrayList<>();
-            for (int i = 0; i < 5000; i++) {
+            for (int i = 0; i < 50; i++) {
                 GrassField map1 = new GrassField(10);
                 map1.addObserver(new ConsoleMapDisplay());
                 RectangularMap map2 = new RectangularMap(10, 10);
@@ -36,6 +36,7 @@ public class World {
                 simulations.add(sim2);
             }
             SimulationEngine engine = new SimulationEngine(simulations);
+            //engine.runSync();
             //engine.runAsync();
             engine.runAsyncThreadPool();
 
