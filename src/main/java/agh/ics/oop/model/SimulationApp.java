@@ -17,19 +17,20 @@ public class SimulationApp extends javafx.application.Application {
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
+        presenter.setWorldMap();
 
-        List<MoveDirection> directions = List.of(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD);
-        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-        WorldMap rectangularMap = new RectangularMap(10, 10);
+        //List<MoveDirection> directions = List.of(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD);
+        //List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        //WorldMap rectangularMap = new RectangularMap(10, 10);
 
-        presenter.setWorldMap(rectangularMap);
-        presenter.drawMap();
+        //presenter.setWorldMap(rectangularMap);
+        //presenter.drawMap();
 
         configureStage(primaryStage, viewRoot);
         primaryStage.show();
 
-        Simulation simulation = new Simulation(positions, directions, rectangularMap);
-        simulation.run();
+        //Simulation simulation = new Simulation(positions, directions, rectangularMap);
+        //simulation.run();
     }
 
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
@@ -39,4 +40,7 @@ public class SimulationApp extends javafx.application.Application {
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
+
+
+
 }
