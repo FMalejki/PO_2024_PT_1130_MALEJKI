@@ -6,9 +6,13 @@ import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 
 import java.util.List;
 
@@ -22,10 +26,12 @@ public class SimulationPresenter implements MapChangeListener {
     private WorldMap worldMap;
     @FXML
     private Label movementDescriptionLabel;
+    @FXML
+    private GridPane mapGrid;
 
 
     public void setWorldMap() {
-        this.worldMap = new RectangularMap(10, 10);;
+        this.worldMap = new GrassField(10);
         this.worldMap.addObserver(this);
         drawMap();
     }
@@ -36,9 +42,45 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void drawMap() {
-        if (worldMap != null) {
-            String mapRepresentation = worldMap.toString();
-            infoLabel.setText(mapRepresentation);
+        if (worldMap == null) return;
+
+        clearGrid();
+
+        Vector2d lowerLeft = worldMap.getCurrentBounds().start();
+        Vector2d upperRight = worldMap.getCurrentBounds().end();
+
+        int rows = upperRight.getY() - lowerLeft.getY() + 1;
+        int cols = upperRight.getX() - lowerLeft.getX() + 1;
+
+        for (int i = 0; i < rows; i++) {
+            mapGrid.getRowConstraints().add(new RowConstraints(40));
+        }
+        for (int j = 0; j < cols; j++) {
+            mapGrid.getColumnConstraints().add(new ColumnConstraints(40));
+        }
+
+        for (int j = 0; j < cols-1; j++) {
+            Label columnLabel = new Label(String.valueOf(lowerLeft.getX() + j));
+            GridPane.setHalignment(columnLabel, HPos.CENTER);
+            mapGrid.add(columnLabel, j + 1, 0); // Nagłówki w pierwszym wierszu
+        }
+
+        // Dodawanie nagłówków wierszy (Y)
+        for (int i = 0; i < rows-1; i++) {
+            Label rowLabel = new Label(String.valueOf(upperRight.getY() - i));
+            GridPane.setHalignment(rowLabel, HPos.CENTER);
+            mapGrid.add(rowLabel, 0, i + 1); // Nagłówki w pierwszej kolumnie
+        }
+
+        for (int y = lowerLeft.getY(); y <= upperRight.getY(); y++) {
+            for (int x = lowerLeft.getX(); x <= upperRight.getX(); x++) {
+                Vector2d position = new Vector2d(x, y);
+                String mapElement = String.valueOf(worldMap.objectAt(position));
+                Label cell = new Label(mapElement != null ? mapElement : "");
+
+                cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
+                mapGrid.add(cell, x - lowerLeft.getX(), upperRight.getY() - y);
+            }
         }
     }
 
@@ -67,5 +109,13 @@ public class SimulationPresenter implements MapChangeListener {
             engine.runAsyncThreadPool();
         }
     }
+
+    private void clearGrid() {
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
+        mapGrid.getColumnConstraints().clear();
+        mapGrid.getRowConstraints().clear();
+    }
+
+
 
 }
