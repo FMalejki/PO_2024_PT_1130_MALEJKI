@@ -7,7 +7,6 @@ import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -17,105 +16,114 @@ import javafx.scene.layout.RowConstraints;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
-    @FXML
-    public Label infoLabel;
-    @FXML
-    public Button startButton;
-    @FXML
-    private TextField movementTextField;
-    private WorldMap worldMap;
-    @FXML
-    private Label movementDescriptionLabel;
-    @FXML
-    private GridPane mapGrid;
+    private WorldMap simulationMap;
 
+    @FXML
+    private GridPane gridDisplay;
+    @FXML
+    private TextField inputMovesField;
+    @FXML
+    private Label statusLabel;
 
-    public void setWorldMap() {
-        this.worldMap = new GrassField(10);
-        this.worldMap.addObserver(this);
-        drawMap();
+    private int gridWidth;
+    private int gridHeight;
+    private int cellWidth = 50;
+    private int cellHeight = 50;
+
+    private final int maxGridWidth = 300;
+    private final int maxGridHeight = 300;
+
+    public void initializeMap(WorldMap map) {
+        this.simulationMap = map;
     }
 
-    @Override
-    public void mapChanged(WorldMap worldMap,String string){
-        Platform.runLater(this::drawMap);
-    }
-
-    public void drawMap() {
-        if (worldMap == null) return;
-
+    private void drawMap() {
         clearGrid();
+        calculateGridBounds();
+        addLabelsToGrid();
+        renderMapElements();
+        gridDisplay.setGridLinesVisible(true);
+    }
 
-        Vector2d lowerLeft = worldMap.getCurrentBounds().start();
-        Vector2d upperRight = worldMap.getCurrentBounds().end();
+    private void calculateGridBounds() {
+        int xStart = simulationMap.getCurrentBounds().start().getX();
+        int yStart = simulationMap.getCurrentBounds().start().getY();
+        int xEnd = simulationMap.getCurrentBounds().end().getX();
+        int yEnd = simulationMap.getCurrentBounds().end().getY();
 
-        int rows = upperRight.getY() - lowerLeft.getY() + 1;
-        int cols = upperRight.getX() - lowerLeft.getX() + 1;
+        gridWidth = xEnd - xStart + 1;
+        gridHeight = yEnd - yStart + 1;
 
-        for (int i = 0; i < rows; i++) {
-            mapGrid.getRowConstraints().add(new RowConstraints(40));
-        }
-        for (int j = 0; j < cols; j++) {
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(40));
-        }
+        cellWidth = Math.round(maxGridWidth / gridWidth);
+        cellHeight = Math.round(maxGridHeight / gridHeight);
 
-        for (int j = 0; j < cols-1; j++) {
-            Label columnLabel = new Label(String.valueOf(lowerLeft.getX() + j));
+        cellHeight = Math.min(cellHeight, cellWidth);
+        cellWidth = cellHeight;
+    }
+
+    private void addLabelsToGrid() {
+        gridDisplay.getColumnConstraints().add(new ColumnConstraints(cellWidth));
+        gridDisplay.getRowConstraints().add(new RowConstraints(cellHeight));
+        Label cornerLabel = new Label("y/x");
+        gridDisplay.add(cornerLabel, 0, 0);
+        GridPane.setHalignment(cornerLabel, HPos.CENTER);
+
+        for (int col = 0; col < gridWidth; col++) {
+            Label columnLabel = new Label(Integer.toString(col));
             GridPane.setHalignment(columnLabel, HPos.CENTER);
-            mapGrid.add(columnLabel, j + 1, 0); // Nagłówki w pierwszym wierszu
+            gridDisplay.getColumnConstraints().add(new ColumnConstraints(cellWidth));
+            gridDisplay.add(columnLabel, col + 1, 0);
         }
 
-        // Dodawanie nagłówków wierszy (Y)
-        for (int i = 0; i < rows-1; i++) {
-            Label rowLabel = new Label(String.valueOf(upperRight.getY() - i));
+        for (int row = 0; row < gridHeight; row++) {
+            Label rowLabel = new Label(Integer.toString(gridHeight - row - 1));
             GridPane.setHalignment(rowLabel, HPos.CENTER);
-            mapGrid.add(rowLabel, 0, i + 1); // Nagłówki w pierwszej kolumnie
+            gridDisplay.getRowConstraints().add(new RowConstraints(cellHeight));
+            gridDisplay.add(rowLabel, 0, row + 1);
         }
+    }
 
-        for (int y = lowerLeft.getY(); y <= upperRight.getY(); y++) {
-            for (int x = lowerLeft.getX(); x <= upperRight.getX(); x++) {
-                Vector2d position = new Vector2d(x, y);
-                String mapElement = String.valueOf(worldMap.objectAt(position));
-                Label cell = new Label(mapElement != null ? mapElement : "");
-
-                cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
-                mapGrid.add(cell, x - lowerLeft.getX(), upperRight.getY() - y);
+    private void renderMapElements() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                Vector2d position = new Vector2d(x, gridHeight - y - 1);
+                String elementLabel = simulationMap.isOccupied(position) ? simulationMap.objectAt(position).toString() : " ";
+                Label element = new Label(elementLabel);
+                gridDisplay.add(element, x + 1, y + 1);
+                GridPane.setHalignment(element, HPos.CENTER);
             }
         }
     }
 
-    public List<MoveDirection> getMoveDirections() {
-        String input = movementTextField.getText();
-        try {
-            return OptionParser.refactor(input.split("\\s+"));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error parsing moves:"+e.getMessage());
-            return List.of();
-        }
+    private void clearGrid() {
+        gridDisplay.getChildren().retainAll(gridDisplay.getChildren().get(0));
+        gridDisplay.getColumnConstraints().clear();
+        gridDisplay.getRowConstraints().clear();
+    }
+
+    @Override
+    public void mapChanged(WorldMap updatedMap, String updateMessage) {
+        initializeMap(updatedMap);
+        Platform.runLater(() -> {
+            drawMap();
+            statusLabel.setText(updateMessage);
+        });
     }
 
     @FXML
     private void onSimulationStartClicked() {
-        List<MoveDirection> directions = getMoveDirections();
-        if (directions.isEmpty()) {
-            movementDescriptionLabel.setText("Nieprawidłowe ruchy. Spróbuj ponownie.");
-        } else {
-            movementDescriptionLabel.setText("Uruchamianie symulacji z ruchami: " + directions);
-            System.out.println("Ruchy: " + directions);
+        String moveSequence = inputMovesField.getText();
+        String[] parsedMoves = moveSequence.split(" ");
+        List<MoveDirection> moveDirections = OptionParser.refactor(parsedMoves);
 
-            List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-            Simulation simulation = new Simulation(positions, directions, worldMap);
-            SimulationEngine engine = new SimulationEngine(List.of(simulation));
-            engine.runAsyncThreadPool();
-        }
+        List<Vector2d> initialPositions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        GrassField map = new GrassField(10);
+        map.addObserver(this);
+
+        Simulation simulation = new Simulation(initialPositions, moveDirections, map);
+        SimulationEngine engine = new SimulationEngine(List.of(simulation));
+
+        statusLabel.setText("Simulation started with moves: " + moveSequence);
+        new Thread(engine::runSync).start();
     }
-
-    private void clearGrid() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
-        mapGrid.getColumnConstraints().clear();
-        mapGrid.getRowConstraints().clear();
-    }
-
-
-
 }

@@ -12,25 +12,16 @@ import java.util.List;
 
 public class SimulationApp extends javafx.application.Application {
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.show();
         FXMLLoader loader = new FXMLLoader();
+
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
-        presenter.setWorldMap();
 
-        //List<MoveDirection> directions = List.of(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD);
-        //List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-        //WorldMap rectangularMap = new RectangularMap(10, 10);
-
-        //presenter.setWorldMap(rectangularMap);
-        //presenter.drawMap();
 
         configureStage(primaryStage, viewRoot);
-        primaryStage.show();
 
-        //Simulation simulation = new Simulation(positions, directions, rectangularMap);
-        //simulation.run();
+        primaryStage.show();
     }
 
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
